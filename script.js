@@ -2,14 +2,10 @@
 const REQUEST_EMAIL = 'info@example.com';
 const MAX_CARS = 8;
 
-/* ---------- Шапка и меню ---------- */
+/* ---------- Мобильное меню ---------- */
 
-const header = document.getElementById('header');
 const burger = document.querySelector('.burger');
 const nav = document.getElementById('nav');
-
-window.addEventListener('scroll', () => header.classList.toggle('is-scrolled', window.scrollY > 8), { passive: true });
-
 function setMenu(open) {
   nav.classList.toggle('is-open', open);
   burger.setAttribute('aria-expanded', String(open));
@@ -18,60 +14,13 @@ function setMenu(open) {
 burger.addEventListener('click', () => setMenu(!nav.classList.contains('is-open')));
 nav.addEventListener('click', (event) => { if (event.target.closest('a')) setMenu(false); });
 
-/* ---------- Вкладки услуг ---------- */
-
-const tabs = [...document.querySelectorAll('.services__tabs [role="tab"]')];
-function selectTab(tab, focus = false) {
-  tabs.forEach((t) => {
-    const active = t === tab;
-    t.setAttribute('aria-selected', String(active));
-    t.tabIndex = active ? 0 : -1;
-    document.getElementById(t.getAttribute('aria-controls')).hidden = !active;
-  });
-  if (focus) tab.focus();
-}
-tabs.forEach((tab, index) => {
-  tab.addEventListener('click', () => selectTab(tab));
-  tab.addEventListener('keydown', (event) => {
-    const step = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[event.key];
-    if (!step) return;
-    event.preventDefault();
-    selectTab(tabs[(index + step + tabs.length) % tabs.length], true);
-  });
-});
-
-/* ---------- Лента рейсов и просмотр фото ---------- */
-
-const track = document.getElementById('trips-track');
-const prev = document.getElementById('trips-prev');
-const next = document.getElementById('trips-next');
-const scrollStep = () => Math.max(320, track.clientWidth * 0.6);
-prev.addEventListener('click', () => track.scrollBy({ left: -scrollStep(), behavior: 'smooth' }));
-next.addEventListener('click', () => track.scrollBy({ left: scrollStep(), behavior: 'smooth' }));
-function updateArrows() {
-  prev.disabled = track.scrollLeft < 8;
-  next.disabled = track.scrollLeft > track.scrollWidth - track.clientWidth - 8;
-}
-track.addEventListener('scroll', updateArrows, { passive: true });
-updateArrows();
-
-const lightbox = document.getElementById('lightbox');
-const lightboxImg = lightbox.querySelector('img');
-track.addEventListener('click', (event) => {
-  const img = event.target.closest('.trip')?.querySelector('img');
-  if (!img) return;
-  lightboxImg.src = img.src;
-  lightboxImg.alt = img.alt;
-  lightbox.showModal();
-});
-lightbox.addEventListener('click', () => lightbox.close());
-
 /* ---------- Форма заявки ---------- */
 
 const form = document.getElementById('request-form');
 const fromInput = form.elements.from;
 const toInput = form.elements.to;
 const phoneInput = form.elements.phone;
+const kindSelect = form.elements.kind;
 const countOut = document.getElementById('count');
 const errorBox = document.getElementById('form-error');
 const cityButtons = [...document.querySelectorAll('.cities button')];
@@ -85,15 +34,9 @@ cityButtons.forEach((button) => {
     toInput.value = button.dataset.city;
     toInput.classList.remove('is-invalid');
     markCity();
-    phoneInput.focus();
   });
 });
 toInput.addEventListener('input', markCity);
-
-document.getElementById('swap').addEventListener('click', () => {
-  [fromInput.value, toInput.value] = [toInput.value, fromInput.value];
-  markCity();
-});
 
 const stepButtons = form.querySelectorAll('[data-step]');
 function renderCount() {
@@ -127,12 +70,50 @@ form.addEventListener('submit', (event) => {
   const body = [
     `Откуда: ${fromInput.value.trim()}`,
     `Куда: ${toInput.value.trim()}`,
-    `Что везём: ${form.elements.kind.value}`,
+    `Что везём: ${kindSelect.value}`,
     `Количество автомобилей: ${count}`,
     `Телефон: ${phoneInput.value.trim()}`,
   ].join('\n');
   window.location.href = `mailto:${REQUEST_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 });
+
+/* ---------- Плитки услуг: клик подставляет тип перевозки в заявку ---------- */
+
+document.querySelectorAll('.tile').forEach((tile) => {
+  tile.addEventListener('click', () => {
+    kindSelect.value = tile.dataset.kind;
+    form.scrollIntoView({ block: 'center' });
+    form.classList.remove('is-flash');
+    void form.offsetWidth; // перезапуск анимации подсветки
+    form.classList.add('is-flash');
+  });
+});
+
+/* ---------- Лента рейсов и просмотр фото ---------- */
+
+const track = document.getElementById('trips-track');
+const prev = document.getElementById('trips-prev');
+const next = document.getElementById('trips-next');
+const scrollStep = () => Math.max(320, track.clientWidth * 0.6);
+prev.addEventListener('click', () => track.scrollBy({ left: -scrollStep(), behavior: 'smooth' }));
+next.addEventListener('click', () => track.scrollBy({ left: scrollStep(), behavior: 'smooth' }));
+function updateArrows() {
+  prev.disabled = track.scrollLeft < 8;
+  next.disabled = track.scrollLeft > track.scrollWidth - track.clientWidth - 8;
+}
+track.addEventListener('scroll', updateArrows, { passive: true });
+updateArrows();
+
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = lightbox.querySelector('img');
+track.addEventListener('click', (event) => {
+  const img = event.target.closest('.trip')?.querySelector('img');
+  if (!img) return;
+  lightboxImg.src = img.src;
+  lightboxImg.alt = img.alt;
+  lightbox.showModal();
+});
+lightbox.addEventListener('click', () => lightbox.close());
 
 /* ---------- Появление блоков при прокрутке ---------- */
 
@@ -140,7 +121,7 @@ form.addEventListener('submit', (event) => {
 let pending = [...document.querySelectorAll('.reveal')];
 document.documentElement.classList.add('js');
 function reveal() {
-  const limit = window.innerHeight * 0.92;
+  const limit = window.innerHeight * 0.94;
   pending = pending.filter((item) => {
     if (item.getBoundingClientRect().top > limit) return true;
     item.classList.add('is-visible');
