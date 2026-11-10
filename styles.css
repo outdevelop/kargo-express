@@ -1,0 +1,250 @@
+/* Карго Экспресс — язык дорожных указателей: синий щит, белая кайма, жёлтая разметка. */
+
+:root {
+  --sign-blue: #0d4fa3;
+  --sign-blue-deep: #093a7a;
+  --marking: #ffc61a;
+  --asphalt: #2a2d33;
+  --concrete: #eceef1;
+  --paper: #ffffff;
+  --ink: #16181c;
+  --ink-soft: #555b66;
+  --line: #cfd4dc;
+
+  --display: "Sofia Sans Condensed", "Arial Narrow", sans-serif;
+  --body: "Golos Text", system-ui, sans-serif;
+
+  --wrap: 1120px;
+  --gutter: clamp(16px, 4vw, 40px);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+
+body {
+  margin: 0;
+  background: var(--concrete);
+  color: var(--ink);
+  font: 400 17px/1.55 var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { font-family: var(--display); margin: 0; line-height: 1.02; }
+p { margin: 0; }
+a { color: inherit; }
+
+:focus-visible { outline: 3px solid var(--marking); outline-offset: 3px; border-radius: 2px; }
+
+.wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
+
+/* ---------- Шапка ---------- */
+
+.topbar {
+  position: sticky; top: 0; z-index: 10;
+  background: var(--paper);
+  border-bottom: 1px solid var(--line);
+}
+.topbar__in {
+  display: flex; align-items: center; gap: 28px;
+  min-height: 64px;
+}
+.brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
+.brand__mark {
+  width: 30px; height: 22px; border-radius: 4px;
+  background: var(--sign-blue);
+  box-shadow: inset 0 0 0 2px var(--paper), 0 0 0 2px var(--sign-blue);
+}
+.brand__name { font: 800 24px/1 var(--display); letter-spacing: .01em; }
+
+.nav { display: flex; gap: 24px; margin-left: auto; font-size: 15px; }
+.nav a { text-decoration: none; color: var(--ink-soft); padding: 6px 0; }
+.nav a:hover { color: var(--sign-blue); }
+
+.phone {
+  font: 700 22px/1 var(--display);
+  text-decoration: none; white-space: nowrap;
+}
+.phone:hover { color: var(--sign-blue); }
+
+/* ---------- Первый экран ---------- */
+
+.hero { padding: clamp(40px, 7vw, 96px) 0 clamp(48px, 7vw, 104px); }
+.hero__in {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(32px, 6vw, 88px);
+  align-items: center;
+}
+.hero h1 {
+  font-weight: 800;
+  font-size: clamp(42px, 6.4vw, 84px);
+  letter-spacing: -.01em;
+  text-wrap: balance;
+}
+.lead {
+  margin-top: 24px;
+  max-width: 34em;
+  font-size: clamp(17px, 1.6vw, 20px);
+  color: var(--ink-soft);
+}
+.hero__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 52px; padding: 0 26px;
+  border-radius: 6px;
+  font: 600 17px/1 var(--body);
+  text-decoration: none;
+}
+.btn--primary { background: var(--marking); color: var(--ink); }
+.btn--primary:hover { background: #ffd447; }
+.btn--ghost { border: 2px solid var(--ink); }
+.btn--ghost:hover { background: var(--ink); color: var(--paper); }
+
+/* ---------- Дорожный указатель ---------- */
+
+.sign { display: flex; flex-direction: column; align-items: center; }
+.sign__panel {
+  width: 100%;
+  background: var(--sign-blue);
+  color: #fff;
+  border-radius: 18px;
+  padding: clamp(14px, 2vw, 22px) clamp(18px, 2.6vw, 30px);
+  box-shadow:
+    inset 0 0 0 5px var(--sign-blue),
+    inset 0 0 0 9px #fff,
+    0 18px 40px -18px rgba(9, 58, 122, .55);
+}
+.sign__row {
+  display: grid;
+  grid-template-columns: 1.1em 1fr auto;
+  align-items: baseline;
+  gap: 14px;
+  padding: 7px 0;
+  font: 700 clamp(26px, 3.4vw, 42px)/1.05 var(--display);
+  text-transform: uppercase; /* как на настоящих указателях */
+  letter-spacing: .02em;
+}
+.sign__row + .sign__row { border-top: 2px solid rgba(255, 255, 255, .28); }
+.sign__arrow { font-weight: 800; }
+.sign__km { font-variant-numeric: tabular-nums; }
+.sign__post {
+  width: 14px; height: clamp(28px, 4vw, 56px);
+  background: linear-gradient(90deg, #9aa1ab, #d5d9df 45%, #8b929c);
+}
+.sign__note {
+  margin-top: 10px;
+  font-size: 14px; color: var(--ink-soft); text-align: center;
+}
+
+/* ---------- Секции ---------- */
+
+.section { padding: clamp(56px, 8vw, 104px) 0; background: var(--paper); }
+.section h2 {
+  font-weight: 800;
+  font-size: clamp(34px, 4.6vw, 56px);
+  margin-bottom: clamp(28px, 4vw, 48px);
+}
+
+/* Услуги: строки, а не карточки */
+.services { margin: 0; border-top: 3px solid var(--ink); }
+.services__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+  gap: 12px 40px;
+  padding: 26px 0;
+  border-bottom: 1px solid var(--line);
+}
+.services dt { font: 700 clamp(24px, 2.6vw, 32px)/1.1 var(--display); }
+.services dd { margin: 0; max-width: 38em; color: var(--ink-soft); }
+
+/* Шаги: асфальт и прерывистая разметка */
+.section--asphalt { background: var(--asphalt); color: #fff; }
+.steps {
+  list-style: none; margin: 0; padding: 0;
+  counter-reset: step;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 36px;
+}
+.steps li {
+  counter-increment: step;
+  padding-top: 22px;
+  /* штрих разметки над каждым шагом */
+  background: linear-gradient(var(--marking), var(--marking)) left top / 64px 6px no-repeat;
+}
+.steps li::before {
+  content: counter(step);
+  display: block;
+  font: 800 56px/1 var(--display);
+  color: var(--marking);
+  margin-bottom: 10px;
+}
+.steps h3 { font-weight: 700; font-size: 26px; margin-bottom: 10px; }
+.steps p { color: #c3c8d0; font-size: 16px; }
+
+/* Реквизиты */
+.details { width: 100%; max-width: 860px; border-collapse: collapse; }
+.details th, .details td {
+  text-align: left; vertical-align: top;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+.details th { width: 34%; padding-right: 24px; font-weight: 400; color: var(--ink-soft); }
+.details td { font-weight: 500; }
+
+/* Контакты */
+.section--blue { background: var(--sign-blue); color: #fff; }
+.contacts {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 32px clamp(32px, 6vw, 88px);
+  align-items: start;
+}
+.section--blue h2 { margin-bottom: 18px; }
+.contacts__lead { max-width: 26em; color: #d6e3f5; font-size: 19px; }
+.contacts__list {
+  display: grid; gap: 12px;
+  font-style: normal; font-size: 18px;
+}
+.contacts__list a { text-decoration-color: rgba(255, 255, 255, .5); text-underline-offset: 4px; }
+.contacts__phone {
+  font: 800 clamp(38px, 5vw, 60px)/1 var(--display);
+  text-decoration: none;
+}
+.contacts__phone:hover { color: var(--marking); }
+
+/* Подвал */
+.footer { background: var(--sign-blue-deep); color: #c5d6ee; font-size: 14px; }
+.footer__in {
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px;
+  padding-top: 20px; padding-bottom: 20px;
+}
+
+/* ---------- Адаптив ---------- */
+
+@media (max-width: 900px) {
+  .nav { display: none; }
+  .phone { margin-left: auto; }
+  .hero__in { grid-template-columns: 1fr; }
+  .sign { max-width: 520px; }
+  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .contacts { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  .brand__name { font-size: 21px; }
+  .phone { font-size: 19px; }
+  .services__row { grid-template-columns: 1fr; padding: 20px 0; }
+  .steps { grid-template-columns: 1fr; gap: 28px; }
+  .btn { width: 100%; }
+  .details th, .details td { display: block; width: 100%; padding: 0; border: 0; }
+  .details th { padding-top: 14px; font-size: 14px; }
+  .details td { padding: 2px 0 14px; border-bottom: 1px solid var(--line); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
