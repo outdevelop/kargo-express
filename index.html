@@ -18,14 +18,17 @@
       <span class="brand__mark" aria-hidden="true"></span>
       <span class="brand__name">Карго Экспресс</span>
     </a>
-    <nav class="nav" aria-label="Разделы">
+    <nav class="nav" id="nav" aria-label="Разделы">
+      <a href="#request">Расчёт</a>
       <a href="#services">Что возим</a>
       <a href="#order">Как заказать</a>
-      <a href="#details">Реквизиты</a>
       <a href="#contacts">Контакты</a>
     </nav>
     <!-- TODO: заменить на настоящий номер -->
     <a class="phone" href="tel:+70000000000">+7 (000) 000-00-00</a>
+    <button class="burger" type="button" aria-controls="nav" aria-expanded="false" aria-label="Открыть меню">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
 
@@ -37,23 +40,72 @@
         <h1>Перевозим автомобили автовозами по&nbsp;всей России</h1>
         <p class="lead">Забираем машины с&nbsp;завода, склада или стоянки и&nbsp;доставляем дилеру, автопарку или владельцу. До&nbsp;восьми автомобилей за&nbsp;рейс, по&nbsp;договору, с&nbsp;2018&nbsp;года.</p>
         <div class="hero__actions">
-          <a class="btn btn--primary" href="tel:+70000000000">Позвонить диспетчеру</a>
-          <a class="btn btn--ghost" href="#order">Как заказать перевозку</a>
+          <a class="btn btn--primary" href="#request">Рассчитать перевозку</a>
+          <a class="btn btn--ghost" href="tel:+70000000000">Позвонить диспетчеру</a>
         </div>
       </div>
 
-      <div class="sign" role="img" aria-label="Дорожный указатель: расстояния от Набережных Челнов. Ижевск около 200 километров, Казань 240, Уфа 290, Самара 390, Екатеринбург 730, Москва 1050.">
-        <div class="sign__panel" aria-hidden="true">
-          <div class="sign__row"><span class="sign__arrow">↑</span><span class="sign__city">Ижевск</span><span class="sign__km">200</span></div>
-          <div class="sign__row"><span class="sign__arrow">↑</span><span class="sign__city">Казань</span><span class="sign__km">240</span></div>
-          <div class="sign__row"><span class="sign__arrow">↑</span><span class="sign__city">Уфа</span><span class="sign__km">290</span></div>
-          <div class="sign__row"><span class="sign__arrow">↑</span><span class="sign__city">Самара</span><span class="sign__km">390</span></div>
-          <div class="sign__row"><span class="sign__arrow">↑</span><span class="sign__city">Екатеринбург</span><span class="sign__km">730</span></div>
-          <div class="sign__row"><span class="sign__arrow">↑</span><span class="sign__city">Москва</span><span class="sign__km">1050</span></div>
-        </div>
+      <div class="sign">
+        <ul class="sign__panel" aria-label="Расстояния от Набережных Челнов">
+          <li><button class="sign__row" type="button" data-city="Ижевск" aria-label="Рассчитать рейс до Ижевска, 200 километров"><span class="sign__arrow" aria-hidden="true">↑</span><span class="sign__city">Ижевск</span><span class="sign__km">200</span></button></li>
+          <li><button class="sign__row" type="button" data-city="Казань" aria-label="Рассчитать рейс до Казани, 240 километров"><span class="sign__arrow" aria-hidden="true">↑</span><span class="sign__city">Казань</span><span class="sign__km">240</span></button></li>
+          <li><button class="sign__row" type="button" data-city="Уфа" aria-label="Рассчитать рейс до Уфы, 290 километров"><span class="sign__arrow" aria-hidden="true">↑</span><span class="sign__city">Уфа</span><span class="sign__km">290</span></button></li>
+          <li><button class="sign__row" type="button" data-city="Самара" aria-label="Рассчитать рейс до Самары, 390 километров"><span class="sign__arrow" aria-hidden="true">↑</span><span class="sign__city">Самара</span><span class="sign__km">390</span></button></li>
+          <li><button class="sign__row" type="button" data-city="Екатеринбург" aria-label="Рассчитать рейс до Екатеринбурга, 730 километров"><span class="sign__arrow" aria-hidden="true">↑</span><span class="sign__city">Екатеринбург</span><span class="sign__km">730</span></button></li>
+          <li><button class="sign__row" type="button" data-city="Москва" aria-label="Рассчитать рейс до Москвы, 1050 километров"><span class="sign__arrow" aria-hidden="true">↑</span><span class="sign__city">Москва</span><span class="sign__km">1050</span></button></li>
+        </ul>
         <div class="sign__post" aria-hidden="true"></div>
-        <p class="sign__note">Расстояния от Набережных Челнов, км. Другие направления — по запросу.</p>
+        <p class="sign__note">Расстояния от Набережных Челнов, км. Нажмите на&nbsp;город, чтобы рассчитать рейс.</p>
       </div>
+    </div>
+  </section>
+
+  <section class="section section--request" id="request">
+    <div class="wrap request">
+      <div class="request__intro">
+        <h2>Рассчитать перевозку</h2>
+        <p>Укажите маршрут и&nbsp;количество машин — пришлём стоимость и&nbsp;ближайшую дату погрузки.</p>
+      </div>
+
+      <form class="form" id="request-form" novalidate>
+        <div class="form__route">
+          <label class="field">
+            <span class="field__label">Откуда</span>
+            <input type="text" name="from" value="Набережные Челны" autocomplete="off" required>
+          </label>
+          <button class="swap" type="button" id="swap" aria-label="Поменять города местами">⇄</button>
+          <label class="field">
+            <span class="field__label">Куда</span>
+            <input type="text" name="to" placeholder="Город назначения" autocomplete="off" required>
+          </label>
+        </div>
+
+        <fieldset class="chips">
+          <legend class="field__label">Что везём</legend>
+          <label><input type="radio" name="kind" value="Новые автомобили" checked><span>Новые</span></label>
+          <label><input type="radio" name="kind" value="Автомобили с пробегом"><span>С пробегом</span></label>
+          <label><input type="radio" name="kind" value="Спецтранспорт, фургоны"><span>Спецтранспорт</span></label>
+        </fieldset>
+
+        <div class="form__row">
+          <div class="field">
+            <span class="field__label" id="count-label">Количество автомобилей</span>
+            <div class="stepper" role="group" aria-labelledby="count-label">
+              <button type="button" data-step="-1" aria-label="Меньше">−</button>
+              <output id="count" aria-live="polite">1</output>
+              <button type="button" data-step="1" aria-label="Больше">+</button>
+            </div>
+          </div>
+          <label class="field field--grow">
+            <span class="field__label">Ваш телефон</span>
+            <input type="tel" name="phone" placeholder="+7" autocomplete="tel" required>
+          </label>
+        </div>
+
+        <p class="form__error" id="form-error" role="alert" hidden></p>
+        <button class="btn btn--primary btn--wide" type="submit">Отправить заявку</button>
+        <p class="form__hint">Заявка откроется письмом в&nbsp;вашей почтовой программе — останется нажать «Отправить».</p>
+      </form>
     </div>
   </section>
 
@@ -105,25 +157,6 @@
     </div>
   </section>
 
-  <section class="section" id="details">
-    <div class="wrap">
-      <h2>Реквизиты</h2>
-      <table class="details">
-        <tbody>
-          <tr><th scope="row">Полное название</th><td>Общество с ограниченной ответственностью «Карго Экспресс»</td></tr>
-          <tr><th scope="row">Краткое название</th><td>ООО «Карго Экспресс»</td></tr>
-          <tr><th scope="row">ИНН</th><td>1650364670</td></tr>
-          <tr><th scope="row">КПП</th><td>165001001</td></tr>
-          <tr><th scope="row">ОГРН</th><td>1181690042555 от 22.05.2018</td></tr>
-          <tr><th scope="row">ОКПО</th><td>28609056</td></tr>
-          <tr><th scope="row">ОКТМО</th><td>92730000</td></tr>
-          <tr><th scope="row">Юридический адрес</th><td>423800, Республика Татарстан, г.&nbsp;Набережные Челны, проезд Резервный, д.&nbsp;8, пом.&nbsp;1</td></tr>
-          <tr><th scope="row">Директор</th><td>Гатауллин Рафаиль Рашитович, действует на&nbsp;основании Устава</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
   <section class="section section--blue" id="contacts">
     <div class="wrap contacts">
       <div>
@@ -144,9 +177,9 @@
 <footer class="footer">
   <div class="wrap footer__in">
     <span>© ООО «Карго Экспресс», 2018–2026</span>
-    <span>ИНН 1650364670, ОГРН 1181690042555</span>
   </div>
 </footer>
 
+<script src="script.js"></script>
 </body>
 </html>
