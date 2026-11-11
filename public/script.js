@@ -1,5 +1,3 @@
-// Куда уходят заявки. TODO: заменить на настоящую почту компании.
-const REQUEST_EMAIL = 'info@example.com';
 const MAX_CARS = 8;
 
 /* ---------- Мобильное меню ---------- */
@@ -53,28 +51,57 @@ stepButtons.forEach((button) => {
 renderCount();
 
 form.addEventListener('input', (event) => event.target.classList.remove('is-invalid'));
-form.addEventListener('submit', (event) => {
+const doneBox = document.getElementById('form-done');
+const submitButton = form.querySelector('[type="submit"]');
+
+function showError(message) {
+  errorBox.textContent = message ?? '';
+  errorBox.hidden = !message;
+}
+
+form.addEventListener('submit', async (event) => {
   event.preventDefault();
   const required = [fromInput, toInput, phoneInput];
   const empty = required.filter((input) => !input.value.trim());
   required.forEach((input) => input.classList.toggle('is-invalid', empty.includes(input)));
   if (empty.length) {
-    errorBox.textContent = 'Заполните маршрут и телефон — без них не сможем рассчитать рейс.';
-    errorBox.hidden = false;
+    showError('Заполните маршрут и телефон — без них не сможем рассчитать рейс.');
     empty[0].focus();
     return;
   }
-  errorBox.hidden = true;
+  showError();
+  submitButton.disabled = true;
+  try {
+    const response = await fetch('/api/requests', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: fromInput.value, to: toInput.value, kind: kindSelect.value, count, phone: phoneInput.value,
+      }),
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      if (response.status === 400 && /телефон/i.test(data.error ?? '')) phoneInput.classList.add('is-invalid');
+      showError(response.status === 400 && /телефон/i.test(data.error ?? '')
+        ? 'Проверьте телефон: нужно 10 цифр после +7.'
+        : data.error || 'Не получилось отправить заявку. Попробуйте ещё раз или позвоните нам.');
+      return;
+    }
+    document.getElementById('form-number').textContent = data.number;
+    form.classList.add('is-done');
+    doneBox.hidden = false;
+  } catch {
+    showError('Нет связи с сервером. Проверьте интернет или позвоните нам.');
+  } finally {
+    submitButton.disabled = false;
+  }
+});
 
-  const subject = `Заявка на перевозку: ${fromInput.value.trim()} — ${toInput.value.trim()}`;
-  const body = [
-    `Откуда: ${fromInput.value.trim()}`,
-    `Куда: ${toInput.value.trim()}`,
-    `Что везём: ${kindSelect.value}`,
-    `Количество автомобилей: ${count}`,
-    `Телефон: ${phoneInput.value.trim()}`,
-  ].join('\n');
-  window.location.href = `mailto:${REQUEST_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+document.getElementById('form-again').addEventListener('click', () => {
+  form.classList.remove('is-done');
+  doneBox.hidden = true;
+  toInput.value = '';
+  markCity();
 });
 
 /* ---------- Плитки услуг: клик подставляет тип перевозки в заявку ---------- */

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Заявки — Карго Экспресс</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+
+<header class="bar">
+  <a class="brand" href="/"><span class="brand__mark" aria-hidden="true"><i></i><i></i><i></i></span>Карго Экспресс</a>
+  <span class="bar__tag">Админ-панель</span>
+  <span class="bar__spacer"></span>
+  <button class="btn btn--ghost btn--small" id="logout" type="button" hidden>Выйти</button>
+</header>
+
+<!-- Вход -->
+<main class="login" id="login" hidden>
+  <form class="login__card" id="login-form">
+    <h1>Вход для сотрудников</h1>
+    <label class="field">
+      <span class="field__label">Пароль</span>
+      <input type="password" name="password" autocomplete="current-password" required>
+    </label>
+    <p class="error" id="login-error" role="alert" hidden></p>
+    <button class="btn btn--accent btn--wide" type="submit">Войти</button>
+  </form>
+</main>
+
+<!-- Заявки -->
+<main class="wrap" id="panel" hidden>
+  <div class="toolbar">
+    <h1>Заявки</h1>
+    <input class="search" id="search" type="search" placeholder="Поиск: номер, телефон, город" aria-label="Поиск по заявкам">
+    <button class="btn btn--accent" id="add" type="button">Добавить заявку</button>
+  </div>
+  <p class="notice" id="notice" hidden></p>
+  <div class="filters" id="filters" role="group" aria-label="Фильтр по статусу"></div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>№</th><th>Клиент</th><th>Маршрут</th><th>Машины</th><th>Статус</th><th>Автовоз (ГЛОНАСС)</th><th>Обновлена</th><th></th></tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div class="empty" id="empty" hidden></div>
+  </div>
+</main>
+
+<!-- Карточка заявки -->
+<dialog id="order-dialog">
+  <form class="dialog__body" id="order-form" novalidate>
+    <h2 id="order-title">Новая заявка</h2>
+    <div class="grid2">
+      <label class="field"><span class="field__label">Телефон клиента</span><input name="clientPhone" type="tel" placeholder="+7" required></label>
+      <label class="field"><span class="field__label">Имя или компания</span><input name="clientName" type="text"></label>
+    </div>
+    <div class="grid2">
+      <label class="field"><span class="field__label">Откуда</span><input name="fromCity" type="text" required></label>
+      <label class="field"><span class="field__label">Куда</span><input name="toCity" type="text" required></label>
+    </div>
+    <div class="grid2">
+      <label class="field"><span class="field__label">Количество машин</span><input name="carsCount" type="number" min="1" max="99" value="1" required></label>
+      <label class="field"><span class="field__label">Плановая дата доставки</span><input name="eta" type="date"></label>
+    </div>
+    <label class="field"><span class="field__label">Что везём (клиент видит это в кабинете)</span><input name="cars" type="text" placeholder="Например: 8 новых Geely Monjaro"></label>
+    <div class="grid2">
+      <label class="field"><span class="field__label">Статус</span><select name="status"></select></label>
+      <label class="field"><span class="field__label">Автовоз (ГЛОНАСС)</span><select name="trackerId"></select></label>
+    </div>
+    <label class="field"><span class="field__label">Комментарий (клиент его не видит)</span><textarea name="comment"></textarea></label>
+    <p class="error" id="order-error" role="alert" hidden></p>
+    <div class="dialog__actions">
+      <button class="btn btn--danger" type="button" id="order-delete" hidden>Удалить заявку</button>
+      <button class="btn btn--plain" type="button" id="order-cancel">Отмена</button>
+      <button class="btn btn--accent" type="submit">Сохранить</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Карта -->
+<dialog id="map-dialog" class="dialog--map">
+  <div class="dialog__body">
+    <h2 id="map-title">Где автовоз</h2>
+    <div class="map" id="map"></div>
+    <p class="map-meta" id="map-meta"></p>
+    <div class="dialog__actions"><button class="btn btn--plain" type="button" id="map-close">Закрыть</button></div>
+  </div>
+</dialog>
+
+<script src="/vendor/leaflet/leaflet.js"></script>
+<script type="module" src="/admin/admin.js"></script>
+</body>
+</html>

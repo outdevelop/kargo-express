@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Личный кабинет — Карго Экспресс</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+
+<header class="bar">
+  <a class="brand" href="/"><span class="brand__mark" aria-hidden="true"><i></i><i></i><i></i></span>Карго Экспресс</a>
+  <span class="bar__spacer"></span>
+  <span class="bar__who" id="who"></span>
+  <button class="btn btn--ghost btn--small" id="logout" type="button" hidden>Выйти</button>
+</header>
+
+<!-- Вход: шаг 1 — телефон -->
+<main class="login" id="step-phone" hidden>
+  <form class="login__card" id="phone-form" novalidate>
+    <h1>Личный кабинет</h1>
+    <p class="muted">Введите телефон, который вы оставляли в заявке. Мы позвоним — отвечать на звонок не нужно.</p>
+    <label class="field">
+      <span class="field__label">Телефон</span>
+      <input type="tel" name="phone" placeholder="+7 900 000-00-00" autocomplete="tel" inputmode="tel" required>
+    </label>
+    <p class="error" id="phone-error" role="alert" hidden></p>
+    <button class="btn btn--accent btn--wide" type="submit">Получить звонок</button>
+  </form>
+</main>
+
+<!-- Вход: шаг 2 — код -->
+<main class="login" id="step-code" hidden>
+  <form class="login__card" id="code-form" novalidate>
+    <h1>Введите код</h1>
+    <p class="muted">Сейчас на <b id="code-phone"></b> поступит звонок. Код — последние 4 цифры номера, с которого звонят.</p>
+    <p class="demo" id="demo" hidden>Демо-режим, звонка не будет. Код: <b id="demo-code"></b></p>
+    <label class="field">
+      <span class="field__label">Последние 4 цифры</span>
+      <input class="code-input" type="text" name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="4" pattern="\d{4}" required>
+    </label>
+    <p class="error" id="code-error" role="alert" hidden></p>
+    <button class="btn btn--accent btn--wide" type="submit">Войти</button>
+    <button class="linklike" type="button" id="change-phone">Изменить номер</button>
+  </form>
+</main>
+
+<!-- Заявки -->
+<main class="wrap wrap--narrow" id="cabinet" hidden>
+  <h1 class="page-title">Ваши перевозки</h1>
+  <div class="orders" id="orders"></div>
+</main>
+
+<script src="/vendor/leaflet/leaflet.js"></script>
+<script type="module" src="/cabinet/cabinet.js"></script>
+</body>
+</html>

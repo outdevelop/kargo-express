@@ -28,11 +28,12 @@
         <a href="#why">О компании</a>
         <a href="#trips">Рейсы</a>
         <a href="#order">Как заказать</a>
+        <a class="nav__phone" href="/cabinet/">Личный кабинет</a>
         <a class="nav__phone" href="tel:+70000000000">+7 (000) 000-00-00</a>
       </nav>
       <!-- TODO: заменить на настоящий номер -->
       <a class="header__phone" href="tel:+70000000000">+7 (000) 000-00-00</a>
-      <a class="btn btn--accent btn--small header__cta" href="#contacts">Связаться</a>
+      <a class="btn btn--accent btn--small header__cta" href="/cabinet/">Личный кабинет</a>
       <button class="burger" type="button" aria-controls="nav" aria-expanded="false" aria-label="Открыть меню"><span></span><span></span></button>
     </header>
 
@@ -92,7 +93,13 @@
 
         <p class="form__error" id="form-error" role="alert" hidden></p>
         <button class="btn btn--accent btn--wide" type="submit">Отправить заявку <span aria-hidden="true">→</span></button>
-        <p class="form__hint">Заявка откроется письмом в&nbsp;вашей почте — останется нажать «Отправить».</p>
+        <p class="form__hint">Диспетчер перезвонит по&nbsp;этому номеру. За&nbsp;перевозкой можно следить в&nbsp;<a href="/cabinet/">личном кабинете</a>.</p>
+        <div class="form__done" id="form-done" role="status" hidden>
+          <h2 class="form__title">Заявка <span id="form-number"></span> принята</h2>
+          <p>Диспетчер перезвонит, чтобы назвать цену и&nbsp;дату погрузки. Статус заявки виден в&nbsp;личном кабинете — вход по&nbsp;вашему номеру телефона.</p>
+          <a class="btn btn--navy btn--wide" href="/cabinet/">Открыть личный кабинет <span aria-hidden="true">→</span></a>
+          <button class="form__again" type="button" id="form-again">Отправить ещё одну заявку</button>
+        </div>
       </form>
     </div>
   </section>

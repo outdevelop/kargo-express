@@ -175,6 +175,12 @@ h3 { font-weight: 600; font-size: clamp(19px, 1.7vw, 23px); line-height: 1.15; l
 
 .form__error { color: #b3261e; font-weight: 500; font-size: 14px; }
 .form__hint { font-size: 13px; color: var(--ink-soft); text-align: center; }
+.form__hint a { color: var(--ink); text-decoration: underline; }
+.form.is-done > :not(.form__done) { display: none; }
+.form__done { display: grid; gap: 14px; }
+.form__done p { color: var(--ink-soft); }
+.form__again { border: 0; background: none; padding: 0; cursor: pointer; color: var(--ink-soft); text-decoration: underline; font-size: 14px; }
+.btn:disabled { opacity: .6; pointer-events: none; }
 .form.is-flash { animation: flash .9s var(--ease); }
 @keyframes flash { 30% { box-shadow: 0 0 0 5px var(--accent), 0 40px 80px -40px rgba(0, 0, 0, .6); } }
 
